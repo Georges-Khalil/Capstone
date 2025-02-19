@@ -19,3 +19,5 @@ print("Waiting for messages. To exit, press CTRL+C")
 
 # Start consuming messages from the queue
 channel.start_consuming()
+
+# testing
