@@ -3,7 +3,7 @@ Steps to setup:<br/>
 •	Set environment variables<br/>
 •	Have an installation of python<br/>
 •	Install RabbitMQ:<br/>
-...runt it using rabbitmq-server.bat<br/>
+...run it using rabbitmq-server.bat<br/>
 ...to have a url to monitor use rabbitmq-plugins enable rabbitmq_management<br/>
 ...access using this url http://localhost:15672<br/>
 •	Install python package pika<br/>
