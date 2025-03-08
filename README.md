@@ -1,7 +1,7 @@
-Steps to setup:
-•	Install erlang
-•	Set environment variables
-•	Have an installation of python
-•	Install RabbitMQ
-•	Install python package pika
-•	pip install feedparser requests beautifulsoup4
+Steps to setup:<br/>
+•	Install erlang<br/>
+•	Set environment variables<br/>
+•	Have an installation of python<br/>
+•	Install RabbitMQ<br/>
+•	Install python package pika<br/>
+•	pip install feedparser requests beautifulsoup4<br/>
