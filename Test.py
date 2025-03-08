@@ -10,6 +10,6 @@ feed = fetch_rss_feed()
 
 if feed.entries:
     latest_article = feed.entries[0]
-    print(latest_article.keys())  # Print all available attributes
+    print(latest_article.keys())  # Print all available attributes ya hmar
 else:
     print("No articles found.")
