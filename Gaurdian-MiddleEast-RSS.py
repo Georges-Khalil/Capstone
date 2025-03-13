@@ -4,7 +4,7 @@ import time
 from bs4 import BeautifulSoup
 
 # Guardian RSS Feed URL
-RSS_FEED_URL = "https://www.theguardian.com/world/rss"
+RSS_FEED_URL = "https://www.theguardian.com/world/middleeast/rss"
 LAST_PROCESSED_LINK = None  # Keeps track of the last seen article
 
 def fetch_rss_feed():
