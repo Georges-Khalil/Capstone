@@ -2,9 +2,10 @@ import feedparser
 import requests
 import time
 from bs4 import BeautifulSoup
+from send2queue import publish_article  # Import function
 
 RSS_FEED_URL = "https://www.lbcgroup.tv/Rss/latest-news/en"
-LAST_PROCESSED_LINK = None  # Keeps track of the last seen article
+LAST_PROCESSED_LINK = None
 
 def fetch_rss_feed():
     """Fetch and parse the RSS feed."""
@@ -19,18 +20,14 @@ def scrape_article_content(article_url):
 
         soup = BeautifulSoup(response.text, "html.parser")
 
-        # Find the main content using the correct class
         article_body = soup.find("div", class_="LongDesc")
-        if article_body:
-            return article_body.get_text(separator="\n", strip=True)  # Extract and clean text
-        
-        return "Content not found"
-    
+        return article_body.get_text(separator="\n", strip=True) if article_body else "Content not found"
+
     except requests.exceptions.RequestException as e:
         return f"Error fetching content: {e}"
 
 def process_feed():
-    """Fetches new articles and processes them if they are new."""
+    """Fetches new articles and sends them to RabbitMQ."""
     global LAST_PROCESSED_LINK
     feed = fetch_rss_feed()
 
@@ -38,13 +35,12 @@ def process_feed():
         print("No articles found in RSS feed.")
         return
 
-    latest_article = feed.entries[0]  # The newest article in the feed
+    latest_article = feed.entries[0]
 
     if LAST_PROCESSED_LINK == latest_article.link:
         print("No new articles.")
         return
 
-    # Extract required fields
     article_data = {
         "title": latest_article.title,
         "description": latest_article.description,
@@ -52,19 +48,16 @@ def process_feed():
         "pub_date": latest_article.published,
         "image": latest_article.media_content[0]["url"] if hasattr(latest_article, "media_content") else "No Image",
         "source": "LBCI",
-        "content": scrape_article_content(latest_article.link)  # Scrape the full article
+        "content": scrape_article_content(latest_article.link)
     }
 
-    # Update last processed link **only after** processing is done
+    # Send to RabbitMQ
+    publish_article(article_data)
+
     LAST_PROCESSED_LINK = latest_article.link  
 
-    print("\n===== New Article Found =====")
-    for key, value in article_data.items():
-        print(f"{key.capitalize()}: {value}")
-    print("============================\n")
-
 if __name__ == "__main__":
-    print("Starting RSS Fetcher...\n")
+    print("Starting LBC RSS Fetcher...\n")
     while True:
         process_feed()
-        time.sleep(60)  # Check every 60 seconds
+        time.sleep(150)# check every 5 minutes
