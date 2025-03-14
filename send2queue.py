@@ -20,5 +20,5 @@ def publish_article(article_data):
         properties=pika.BasicProperties(delivery_mode=2)  # Makes message persistent
     )
 
-    print(f"📤 Sent article: {article_data['title']}")
+    print(f"Sent article: {article_data['title']}")
     connection.close()
