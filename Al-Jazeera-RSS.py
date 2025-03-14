@@ -1,8 +1,12 @@
+import sys
 import feedparser
 import requests
 import time
 from bs4 import BeautifulSoup
 from send2queue import publish_article  # Import function
+
+# Set console encoding to UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
 
 RSS_FEED_URL = "https://www.aljazeera.com/xml/rss/all.xml"
 LAST_PROCESSED_LINK = None
@@ -58,7 +62,7 @@ def process_feed():
     # Scrape article content
     article_content = scrape_article_content(latest_article.link)
     if not article_content:
-        print(f"⚠️ Skipping article (No content found): {latest_article.title}")
+        print(f"Skipping article (No content found): {latest_article.title}")
         return  # Skip this article
 
     article_data = {
