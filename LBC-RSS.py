@@ -60,4 +60,4 @@ if __name__ == "__main__":
     print("Starting LBC RSS Fetcher...\n")
     while True:
         process_feed()
-        time.sleep(150)# check every 5 minutes
+        time.sleep(150)# check every 2.5 minutes
